@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>选择框示例</title>
+    <style>select, button {
+        display: block;
+        color: rgb(34, 34, 34);
+        background: linear-gradient(142.99deg, rgba(217, 217, 217, 0.63) 15.53%, rgba(243, 243, 243, 0.63) 88.19%);
+        box-shadow: 0px 12px 24px -1px rgba(0, 0, 0,0.18);
+        border-color: rgba(7, 4, 14, 0);
+        border-radius: 50px;
+        /* block-size: 40px; */
+        height: 44px;
+        margin-bottom: .7rem;
+        /* margin: 7px auto;  */
+         /* padding: 18px 15px; */
+         outline: none;
+        text-align: center;
+        width: 100%;
+        max-width: 400px;
+        transition: 0.5s;
+        text-align: center;
+        font-size: 16px; /* 设置字体大小 */
+        font-family: Arial, sans-serif; /* 设置字体家族 */
+      
+              } 
+      select:hover, button:hover {
+        background-color: #348016; /* 鼠标悬停时改变背景颜色 */
+      }
+      
+      select:focus, button:focus {
+        outline: none; /* 移除默认的焦点轮廓 */
+        box-shadow: 0 0 10px #00a0f0; /* 获得焦点时添加阴影效果 */
+      }</style>
+</head>
+<body>
+    <label for="matrixInput">输入密钥矩阵:</label>
+    < textarea id="matrixInput" class="input" rows="4" cols="20"></textarea>
+    <script>
+    function getMatrix() {
+        const matrixString = document.getElementById("matrixInput").value;
+        const matrix = matrixString.split(";").map(row => row.split(",").map(element => parseInt(element, 10)));
+        return matrix;
+      }
+    </script>
+</body>
+</html>

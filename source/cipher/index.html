@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>密码学</title>
+    <style>
+
+body, html {
+            /* height: 100%; */
+
+            display: flex;
+            margin: 0 auto;
+        }
+.main {
+            width: 100%;
+            max-width: 600px; /* 限制最大宽度 */
+             padding: 20px;
+            box-sizing: border-box;
+            margin-left: 180px;
+}
+h1 {    
+            margin-left: 150px;/* 水平居中h1文字 */
+            color: #3e7ca5; /* 设置h1文字的颜色 */
+            font-family: cursive, sans-serif;
+        }
+h1:hover{
+    color: #05060f;
+}
+.input {
+    
+  width: 100%;
+  margin-bottom: .5rem; 
+  max-width: 400px;
+  height: 44px;
+  background-color: #05060f0a;
+  border-radius: .5rem;
+  padding: 0 1rem;
+  border: 2px solid transparent;
+  font-size: 1rem;
+  transition: border-color .3s cubic-bezier(.25,.01,.25,1) 0s, color .3s cubic-bezier(.25,.01,.25,1) 0s,background .2s cubic-bezier(.25,.01,.25,1) 0s;
+}
+
+.label {
+  display: block;
+    
+  font-size: 1.2rem;
+  font-weight: bold;
+  font-family: cursive, sans-serif;
+  color: #05060f99;
+  transition: color .3s cubic-bezier(.25,.01,.25,1) 0s;
+}
+.label:hover{
+    color: #6eeb0e99;
+    
+}
+.input:hover, .input:focus, .input-group:hover .input {
+  outline: none;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-color: #05060f;
+}
+#mySelect,h2{
+    float: left;
+
+    margin-top: 10px;
+    margin-bottom: 5px; /* 添加一些上边距 */
+    max-width: 180px;
+    width: 100%;
+  }
+h2{
+    display: inline-block;
+    font-family: cursive, sans-serif;
+    width: 50px;
+}
+#algorithm {
+    float: left;
+}
+select{margin-bottom: 10px;
+
+        margin-top: 10px;
+        max-width: 180px;
+        width: 100%;
+        height: 44px;
+        
+        outline: 0;
+        background: #bde9cf;
+        color: #5f84ce;
+        border: 1px solid crimson;
+        border-radius: 9px;
+        
+        padding: 4px;
+        
+        font-size: 16px;
+        font-family: cursive, sans-serif;
+        font-weight:bolder;
+        text-align: center;
+        transition: 0.5s;
+    }
+ button {
+  display: inline-block;
+  color: rgb(34, 34, 34);
+  background: linear-gradient(142.99deg, rgba(217, 217, 217, 0.63) 15.53%, rgba(243, 243, 243, 0.63) 88.19%);
+  box-shadow: 0px 12px 24px -1px rgba(0, 0, 0,0.18);
+  border-color: rgba(7, 4, 14, 0);
+  border-radius: 50px;
+  /* block-size: 40px; */
+  height: 44px;
+  margin-top: 10px;
+  margin-bottom: .7rem;
+  /* margin: 7px auto;  */
+   /* padding: 18px 15px; */
+   outline: none;
+  text-align: center;
+  font-family: cursive, sans-serif;
+  font-weight: bolder;
+  width: 100%;
+  max-width: 200px;
+  transition: 0.5s;
+  text-align: center;
+  font-size: 16px; /* 设置字体大小 */
+  
+
+        } 
+select:hover {
+  background-color: #b1f197; /* 鼠标悬停时改变背景颜色 */
+}
+button:hover{
+    background-color: #26acf4;
+}
+ button:focus {
+  outline: none; /* 移除默认的焦点轮廓 */
+  box-shadow: 0 0 10px #3e474b; /* 获得焦点时添加阴影效果 */
+}
+        /* button {
+            background-color: #a1c5ec;
+            color: rgb(229, 139, 139);
+            border: none;
+            cursor: pointer;
+        } */
+.result {
+            margin-top: 20px;
+            font-weight: bold;
+
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #05060f99;
+            
+        }
+
+.video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1000;
+      object-fit: cover;
+     
+    }
+
+    </style>
+</head>
+<body>
+    <div class="main">
+    <h1 >密码学</h1>
+    <video class="video" src="man.mp4" loop="loop" controls="controls" autoplay ="autoplay" muted ></video>
+    <label class="label" for="algorithm">选择加解密算法：</label>
+    <select id="mySelect" onchange="displayContent()">
+        <option value="select">Select a cipher</option>
+        <option value="option1">古典密码</option>
+        <option value="option2">现代密码</option>
+    </select>
+    <h2>  -->></h2>
+
+    <div id="contentArea" style="display: none;">
+    <!-- 这里放置显示的内容 --></div>
+
+    <div style="clear: both;"></div>
+<div id="keysContainer" style="display: none;"></div>
+
+  
+    <!-- <label for="inputData">输入数据：</label>
+    <!-- <input id="inputData" type="text" placeholder="在此输入需要加解密的数据"> -->
+    <!-- <input placeholder="输入需要加解密的数据" class="input" name="text" type="text"> -->
+
+<!-- 
+    <label for="inputKey">输入密钥：</label>
+    <input id="inputKey" type="text" placeholder="在此输入密钥"> -->
+    <!-- <input placeholder="输入密钥" class="input" name="text" type="text">    -->
+
+    <button onclick="encryptData()">加密</button>
+    <button onclick="decryptData()">解密</button>
+ 
+
+    <div class="result">
+        
+        <p id="output"></p>
+    </div>
+
+    <script>
+        
+//        const backendUrl = "https://flask-backend-cwc0.onrender.com/"; // 线上服务的 URL 地址）
+        const backendUrl = "http://127.0.0.1:5000"; // 后端服务的 URL（本地开发地址）           
+    
+         //下拉框设置
+        function displayContent() {
+            const select = document.getElementById('mySelect');
+            const selectedOption = select.options[select.selectedIndex].value;
+            const contentArea = document.getElementById('contentArea');
+            const keysContainer = document.getElementById('keysContainer');
+
+            // 清空之前的密钥输入框
+            keysContainer.innerHTML = '';
+            keysContainer.style.display = 'none';
+            // contentArea.innerHTML = '';
+
+            // contentArea.style.display = 'none';
+
+            switch (selectedOption) {
+                case 'option1':
+                    // 古典密码的内容
+                    contentArea.innerHTML = `
+                        <select id="algorithm" >
+                            <option value="select">Select a classical_algorithm</option>
+                            <option value="加法密码">加法密码</option>
+                            <option value="单表代替">单表代替</option>
+                            <option value="仿射密码">仿射密码</option>
+                            <option value="PlayFair">PlayFair</option>
+                            <option value="Vigenere">Vigenere</option>
+                            <option value="Hill">Hill</option>
+                            <option value="permutation">permutation</option>
+
+                        </select>
+                    `;
+                    contentArea.style.display = 'block';
+                    break;
+                case 'option2':
+                    // 现代密码的内容
+                    contentArea.innerHTML = `
+                        <select id="algorithm">
+                            <option value="select">Select a modern_algorithm</option>
+                            <option value="DES">DES</option>
+                            <option value="AES">AES</option>
+                            <option value="RSA">RSA</option>
+                            <option value="SHA1">SHA1</option>
+                            <option value="SM4">SM4</option>
+                            <option value="RC4">RC4</option> 
+                            <option value="Elgman">Elgman</option> 
+                        </select>
+                    `;
+                    contentArea.style.display = 'block';
+                    break;
+            }
+
+            // 获取算法选择器
+            const algorithmSelect = document.getElementById('algorithm');
+            // 监听算法选择变化
+            algorithmSelect.addEventListener('change', function() {
+                const selectedAlgorithm = algorithmSelect.value;
+                if (selectedAlgorithm === '仿射密码') {
+                    // 如果选择的是RSA，添加两个密钥输入框
+                    keysContainer.innerHTML = `
+                    <div class="input-group" >
+                    <label class="label" for="inputData">输入数据：</label>
+                    <input placeholder="输入需要加解密的数据" autocomplete="off" id="inputData" class="input"  name="text" type="text"></div>
+                    <label for="publicKey" class="label">密钥1</label>
+                    <input type="text" id="publicKey" class="input" placeholder="输入密钥1" autocomplete="off" type="text">
+                    <label for="privateKey" class="label">密钥2</label>
+                    <input type="text" id="privateKey"  class="input" placeholder="输入密钥2" autocomplete="off" type="text">
+                    `;
+                    keysContainer.style.display = 'block';}
+                else if (selectedAlgorithm === 'Elgman') {
+                    // 如果选择的是RSA，添加两个密钥输入框
+                    keysContainer.innerHTML = `
+                    <div class="input-group" >
+                    <label class="label" for="inputData">输入数据：</label>
+                    <input placeholder="输入需要加解密的数据_1299" autocomplete="off" id="inputData" class="input"  name="text" type="text"></div>
+                    <label for="publicKey" class="label">私钥</label>
+                    <input type="text" id="publicKey" class="input" placeholder="输入私钥_765" autocomplete="off" type="text">
+                    <label for="privateKey" class="label">随机数</label>
+                    <input type="text" id="privateKey"  class="input" placeholder="输入随机数_853" autocomplete="off" type="text">
+                    `;
+                    keysContainer.style.display = 'block';}
+                else if (selectedAlgorithm ==='RSA'){
+                    
+                    keysContainer.innerHTML = `
+                    <div class="input-group" >
+                    <label class="label" for="inputData">输入数据：</label>
+                    <input placeholder="输入需要加解密的数据_19" autocomplete="off" id="inputData" class="input"  name="text" type="text"></div>
+                    <label for="p" class="label">p</label>
+                    <input type="text" id="p" class="input" placeholder="输入p的值_7" autocomplete="off" type="text">
+                    <label for="q" class="label">q</label>
+                    <input type="text" id="q"  class="input" placeholder="输入q的值_17" autocomplete="off" type="text">
+                    <label for="e" class="label">e</label>
+                    <input type="text" id="e"  class="input" placeholder="输入e的值_5" autocomplete="off" type="text">
+                    `;
+                    keysContainer.style.display = 'block';
+                }
+                else if(selectedAlgorithm ==='SHA1'){
+                    keysContainer.innerHTML = `
+                        <div class="input-group" >
+                        <label class="label" for="inputData">输入数据：</label>
+                        <input placeholder="输入需要加解密的数据" autocomplete="off" id="inputData" class="input"  name="text" type="text">    </div>
+                       `
+                    keysContainer.style.display = 'block';   
+                }
+                else if(selectedAlgorithm==='Hill'){
+                    keysContainer.innerHTML = `
+                        <div class="input-group" >
+                        <label class="label" for="inputData">输入数据：</label>
+                        <input placeholder="输入需要加解密的数据" autocomplete="off" id="inputData" class="input"  name="text" type="text">    </div>
+                       <div class="input-group">
+                        <label class="label" for="matrixInput">输入密钥：</label>
+                        <textarea placeholder="输入需要密钥矩阵eg:11,8;3,7" id="matrixInput" class="input" rows="4" cols="20"></textarea></div>`
+                        
+                    keysContainer.style.display = 'block';  
+                }
+                else {
+                    keysContainer.innerHTML = `
+                        <div class="input-group" >
+                        <label class="label" for="inputData">输入数据：</label>
+                        <input placeholder="输入需要加解密的数据" autocomplete="off" id="inputData" class="input"  name="text" type="text">    </div>
+                        <div class="input-group">
+                        <label class="label" for="inputKey">输入密钥：</label>
+                        <input placeholder="输入密钥" autocomplete="off" id="inputKey" class="input"  name="text" type="text"></div>`
+                    keysContainer.style.display = 'block';   
+                }
+                
+            }  );
+        }
+
+        // 加密函数参数设置
+        async function encryptData() {
+            const algorithm = document.getElementById("algorithm").value; // 获取算法选择
+            let data,key1,key2,key3;
+            if (algorithm === '仿射密码' ) {
+                 data = document.getElementById("inputData").value;
+                 key1 = parseInt(document.getElementById("publicKey").value,10); // 获取公钥
+                 key2 = parseInt(document.getElementById("privateKey").value,10); // 获取私钥
+                } 
+            else if (algorithm=='Elgman'){
+                 data = parseInt(document.getElementById("inputData").value, 10);
+                 key1 = parseInt(document.getElementById("publicKey").value,10); // 获取私钥
+                 key2 = parseInt(document.getElementById("privateKey").value,10);//获得随机数
+
+            }
+            else if (algorithm ==='RSA') {
+                data = parseInt(document.getElementById("inputData").value, 10);
+                key1 = parseInt(document.getElementById("p").value,10); // 获取公钥
+                key2 = parseInt(document.getElementById("q").value,10);
+                key3 = parseInt(document.getElementById("e").value,10); 
+            }
+            else if (algorithm === '加法密码') {
+                data = document.getElementById("inputData").value;
+                 key1 = parseInt(document.getElementById("inputKey").value,10);
+            }
+            else if (algorithm==='SHA1'){
+                data = document.getElementById("inputData").value;
+            }
+            else if (algorithm==='Hill'){
+                data = document.getElementById("inputData").value;
+                const matrixString = document.getElementById("matrixInput").value;
+                key1= matrixString.split(";").map(row => row.split(",").map(element => parseInt(element, 10)));
+
+            }
+            else {
+                data = document.getElementById("inputData").value;
+                key1 = document.getElementById("inputKey").value; // 获取其他算法的单个密钥
+            }
+                                                
+
+            try {
+                // 向后端发送 POST 请求
+                const response = await fetch(`${backendUrl}/encrypt`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" }, // 请求头，表示数据类型为 JSON
+                    body: JSON.stringify({ algorithm, data, key1,key2,key3}), // 请求体，发送的数据
+                });
+
+                const result = await response.json(); // 接收后端返回的响应
+                if (response.ok) {
+                    // 将加密结果显示在页面上
+                    document.getElementById("output").innerText = `加密结果：${result.result}`;
+                } else {
+                    document.getElementById("output").innerText = `错误：${result.error}  提示：${result.result}`;
+                }
+            } catch (error) {
+                document.getElementById("output").innerText = "请求失败，请检查网络！";
+            }
+        }
+        // 解密函数设置
+        async function decryptData() {
+            const algorithm = document.getElementById("algorithm").value;
+            // const key = document.getElementById("inputKey").value;
+            let data,key1,key2,key3;
+            
+            if (algorithm === '仿射密码') {
+                data = document.getElementById("inputData").value;
+                 key1 = parseInt(document.getElementById("publicKey").value,10); // 获取公钥
+                 key2 = parseInt(document.getElementById("privateKey").value,10); // 获取私钥
+                } 
+            else if (algorithm ==='RSA') {
+                data = parseInt(document.getElementById("inputData").value, 10);
+                key1 = parseInt(document.getElementById("p").value,10); // 获取公钥
+                key2 = parseInt(document.getElementById("q").value,10); // 获取私钥
+                key3 = parseInt(document.getElementById("e").value,10);
+            }
+            else if (algorithm === '加法密码') {
+                data = document.getElementById("inputData").value;
+                key1 = parseInt(document.getElementById("inputKey").value,10);
+            }
+            else if (algorithm==='SHA1'){
+                data = document.getElementById("inputData").value;
+            }
+            else if (algorithm==='Hill'){
+                data = document.getElementById("inputData").value;
+                const matrixString = document.getElementById("matrixInput").value;
+                key1= matrixString.split(";").map(row => row.split(",").map(element => parseInt(element, 10)));
+
+            }
+            else {
+                 data = document.getElementById("inputData").value;
+                 key1 = document.getElementById("inputKey").value; // 获取其他算法的单个密钥
+            }
+
+            try {
+                const response = await fetch(`${backendUrl}/decrypt`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ algorithm, data, key1,key2,key3}),
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    document.getElementById("output").innerText = `解密结果：${result.result}`;
+                } else {
+                    document.getElementById("output").innerText = `错误：${result.error}  提示：${result.result}`;
+                }
+            } catch (error) {
+                document.getElementById("output").innerText = "请求失败，请检查后端连接！";
+            }
+        }
+    </script>
+</div>
+</body>
+</html>
+
+

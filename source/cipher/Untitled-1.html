@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>选择框示例</title>
+    <style>
+       #contentArea, #mySelect {
+    display: inline-block;
+    float: left;
+    margin-top: 10px; /* 添加一些上边距 */
+  }
+      h2{display: flex;
+        float: left;}
+        select, button {
+            float: left;
+            color: rgb(34, 34, 34);
+            background: linear-gradient(142.99deg, rgba(217, 217, 217, 0.63) 15.53%, rgba(243, 243, 243, 0.63) 88.19%);
+            box-shadow: 0px 12px 24px -1px rgba(0, 0, 0,0.18);
+            border-color: rgba(7, 4, 14, 0);
+            border-radius: 50px;
+            height: 44px;
+            margin-bottom: .7rem;
+            outline: none;
+            text-align: center;
+            width: 100%;
+            max-width: 200px;
+            transition: 0.5s;
+            text-align: center;
+            font-size: 16px; /* 设置字体大小 */
+            font-family: Arial, sans-serif; /* 设置字体家族 */
+        }
+        select:hover, button:hover {
+            background-color: #348016; /* 鼠标悬停时改变背景颜色 */
+        }
+        select:focus, button:focus {
+            outline: none; /* 移除默认的焦点轮廓 */
+            box-shadow: 0 0 10px #00a0f0; /* 获得焦点时添加阴影效果 */
+        }
+    </style>
+</head>
+<body>
+    <select id="mySelect" onchange="displayContent()">
+        <option value="option1">古典密码</option>
+        <option value="option2">现代密码</option>
+    </select>
+  <h2>-->></h2>
+
+    <div id="contentArea" style="display: none;">
+        <!-- 这里放置显示的内容 -->
+    </div>
+    <div style="clear: both;"></div>
+
+    <div id="keysContainer" style="display: none;"></div>
+
+    <script>
+        function displayContent() {
+            const select = document.getElementById('mySelect');
+            const selectedOption = select.options[select.selectedIndex].value;
+            const contentArea = document.getElementById('contentArea');
+            const keysContainer = document.getElementById('keysContainer');
+
+            // 清空之前的密钥输入框
+            keysContainer.innerHTML = '';
+            keysContainer.style.display = 'none';
+
+            switch (selectedOption) {
+                case 'option1':
+                    // 古典密码的内容
+                    contentArea.innerHTML = `
+                        <select id="algorithm">
+                            <option value="DES">DES</option>
+                            <option value="AES">AES</option>
+                            <option value="RSA">RSA</option>
+                            <option value="SM4">SM4</option>
+                        </select>
+                    `;
+                    contentArea.style.display = 'block';
+                    break;
+                case 'option2':
+                    // 现代密码的内容
+                    contentArea.innerHTML = `
+                        <select id="algorithm" >
+                            <option value="加法密码">加法密码</option>
+                            <option value="单表代替">单表代替</option>
+                            <option value="仿射密码">仿射密码</option>
+                            <option value="PlayFair">PlayFair</option>
+                            <option value="Vigenere">Vigenere</option>
+                            <option value="Hill">Hill</option>
+                        </select>
+                    `;
+                    contentArea.style.display = 'block';
+                    break;
+            }
+
+            // 获取算法选择器
+            const algorithmSelect = document.getElementById('algorithm');
+            // 监听算法选择变化
+            algorithmSelect.addEventListener('change', function() {
+                const selectedAlgorithm = algorithmSelect.value;
+                if (selectedAlgorithm === 'RSA') {
+                    // 如果选择的是RSA，添加两个密钥输入框
+                    keysContainer.innerHTML = `
+                        <label for="publicKey">公钥：</label>
+                        <input type="text" id="publicKey" placeholder="输入公钥" autocomplete="off">
+                        <label for="privateKey">私钥：</label>
+                        <input type="text" id="privateKey" placeholder="输入私钥" autocomplete="off">
+                    `;
+                    keysContainer.style.display = 'block';
+                }
+            } );
+        }
+    </script>
+</body>
+</html>

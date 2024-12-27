@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>密码学</title>
+    <style>
+
+body, html {
+            /* height: 100%; */
+            margin: 0;
+            display: flex;
+            margin: 0 auto;
+        }
+.main {
+            width: 100%;
+            max-width: 600px; /* 限制最大宽度 */
+             padding: 20px;
+            box-sizing: border-box;
+            margin-left: 180px;
+}
+h1 {    
+            margin-left: 150px;/* 水平居中h1文字 */
+            color: #3e7ca5; /* 设置h1文字的颜色 */
+            font-family: cursive, sans-serif;
+        }
+h1:hover{
+    color: #05060f;
+
+}
+.input {
+    
+  width: 100%;
+  margin-bottom: .5rem; 
+  max-width: 400px;
+  height: 44px;
+  background-color: #05060f0a;
+  border-radius: .5rem;
+  padding: 0 1rem;
+  border: 2px solid transparent;
+  font-size: 1rem;
+  transition: border-color .3s cubic-bezier(.25,.01,.25,1) 0s, color .3s cubic-bezier(.25,.01,.25,1) 0s,background .2s cubic-bezier(.25,.01,.25,1) 0s;
+}
+.label {
+  display: block;
+  margin-bottom: .3rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #05060f99;
+  transition: color .3s cubic-bezier(.25,.01,.25,1) 0s;
+}
+.label:hover{
+    color: #6eeb0e99;
+}
+.input:hover, .input:focus, .input-group:hover .input {
+  outline: none;
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+  border-color: #05060f;
+}
+
+select{margin-bottom: 10px;
+        margin-top: 10px;
+        max-width: 400px;
+        width: 100%;
+        height: 44px;
+        
+        outline: 0;
+        background: #bde9cf;
+        color: #5f84ce;
+        border: 1px solid crimson;
+        border-radius: 9px;
+        
+        padding: 4px;
+        
+        font-size: 16px;
+        font-family: cursive, sans-serif;
+        font-weight:bolder;
+        text-align: center;
+        transition: 0.5s;
+    }
+ button {
+  display: block;
+  color: rgb(34, 34, 34);
+  background: linear-gradient(142.99deg, rgba(217, 217, 217, 0.63) 15.53%, rgba(243, 243, 243, 0.63) 88.19%);
+  box-shadow: 0px 12px 24px -1px rgba(0, 0, 0,0.18);
+  border-color: rgba(7, 4, 14, 0);
+  border-radius: 50px;
+  /* block-size: 40px; */
+  height: 44px;
+  margin-bottom: .7rem;
+  /* margin: 7px auto;  */
+   /* padding: 18px 15px; */
+   outline: none;
+  text-align: center;
+  font-family: cursive, sans-serif;
+  width: 100%;
+  max-width: 400px;
+  transition: 0.5s;
+  text-align: center;
+  font-size: 16px; /* 设置字体大小 */
+  
+
+        } 
+select:hover,button:hover {
+  background-color: #b1f197; /* 鼠标悬停时改变背景颜色 */
+}
+
+ button:focus {
+  outline: none; /* 移除默认的焦点轮廓 */
+  box-shadow: 0 0 10px #00a0f0; /* 获得焦点时添加阴影效果 */
+}
+
+        /* button {
+            background-color: #a1c5ec;
+            color: rgb(229, 139, 139);
+            border: none;
+            cursor: pointer;
+        } */
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #05060f99;
+            
+        }
+
+.video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1000;
+      object-fit: cover;
+     
+    }
+
+    </style>
+</head>
+<body>
+    <div class="main">
+
+    <h1 >密码学</h1>
+    <video class="video" src="man.mp4" loop="loop" controls="controls" autoplay ="autoplay" muted ></video>
+    
+    <label class="label" for="algorithm">选择加解密算法：</label>
+    <select id="algorithm" >
+            
+        <option value="select">Select a algorithm</option>
+        <optgroup label="古典密码" id="classicalCiphers" >
+            <option value="加法密码">加法密码</option>
+            <option value="单表代替">单表代替</option>
+            <option value="仿射密码">仿射密码</option>
+            <option value="PlayFair">PlayFair</option>
+            <option value="Vigenere">Vigenere</option>
+            <option value="Hill">Hill</option>
+        </optgroup>
+        <optgroup label="现代密码" id="modernCiphers" >
+        <option value="DES">DES</option>
+        <option value="AES">AES</option>
+        <option value="RSA">RSA</option>
+        <option value="SM4">SM4</option>
+        <option value="RC4">RC4</option>
+    </optgroup>
+
+
+        <!-- 可扩展其他算法 -->
+    </select>
+
+    <div class="input-group" >
+        <label class="label" for="inputData">输入数据：</label>
+        <input placeholder="输入需要加解密的数据" autocomplete="off" id="inputData" class="input"  name="text" type="text">
+        
+    </div>
+    <div class="input-group">
+        <label class="label" for="inputKey">输入密钥：</label>
+        <input placeholder="输入密钥" autocomplete="off" id="inputKey" class="input"  name="text" type="text"></div>
+    <!-- <label for="inputData">输入数据：</label>
+    <!-- <input id="inputData" type="text" placeholder="在此输入需要加解密的数据"> -->
+    <!-- <input placeholder="输入需要加解密的数据" class="input" name="text" type="text"> -->
+
+<!-- 
+    <label for="inputKey">输入密钥：</label>
+    <input id="inputKey" type="text" placeholder="在此输入密钥"> -->
+    <!-- <input placeholder="输入密钥" class="input" name="text" type="text">    -->
+
+    <button onclick="encryptData()">加密</button>
+    <button onclick="decryptData()">解密</button>
+ 
+
+    <div class="result">
+        <p>结果：</p>
+        <p id="output"></p>
+    </div>
+
+    <script>
+//        const backendUrl = "https://flask-backend-cwc0.onrender.com/"; // 线上服务的 URL 地址）
+        const backendUrl = "http://127.0.0.1:5000"; // 后端服务的 URL（本地开发地址）           
+        
+        async function encryptData() {
+            const algorithm = document.getElementById("algorithm").value; // 获取算法选择
+            const data = document.getElementById("inputData").value; // 获取用户输入的数据
+            const key = document.getElementById("inputKey").value; // 获取用户输入的密钥
+
+            try {
+                // 向后端发送 POST 请求
+                const response = await fetch(`${backendUrl}/encrypt`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" }, // 请求头，表示数据类型为 JSON
+                    body: JSON.stringify({ algorithm, data, key }), // 请求体，发送的数据
+                });
+
+                const result = await response.json(); // 接收后端返回的响应
+                if (response.ok) {
+                    // 将加密结果显示在页面上
+                    document.getElementById("output").innerText = `加密结果：${result.result}`;
+                } else {
+                    document.getElementById("output").innerText = `错误：${result.error}  提示：${result.result}`;
+                }
+            } catch (error) {
+                document.getElementById("output").innerText = "请求失败，请检查网络！";
+            }
+        }
+        
+        async function decryptData() {
+            const algorithm = document.getElementById("algorithm").value;
+            const data = document.getElementById("inputData").value;
+            const key = document.getElementById("inputKey").value;
+
+            try {
+                const response = await fetch(`${backendUrl}/decrypt`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ algorithm, data, key }),
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    document.getElementById("output").innerText = `解密结果：${result.result}`;
+                } else {
+                    document.getElementById("output").innerText = `错误：${result.error}  提示：${result.result}`;
+                }
+            } catch (error) {
+                document.getElementById("output").innerText = "请求失败，请检查网络！";
+            }
+        }
+ 
+
+
+
+    </script>
+</div>
+</body>
+</html>
+
+
